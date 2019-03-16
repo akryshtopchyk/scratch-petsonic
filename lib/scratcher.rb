@@ -8,7 +8,6 @@ class Scratcher
 
   def get_category_items
     index = 1
-    item = []
       loop do
         category_page = get_category_xml(index)
         items = category_page.css('a.product_img_link')
@@ -21,15 +20,25 @@ class Scratcher
           item_main_name = item_page.xpath('//h1[@class="product_main_name"]').text.strip #ссылка на имя
           item_weight = item_page.xpath('//span[@class="radio_label"]')
           item_price = item_page.xpath('//span[@class="price_comb"]')
+          puts item_page.xpath('//span[@id="our_price_display"]').text.strip
           $i = 0
           full_inf = []
-          while $i < item_weight.count  do
+          if item_weight.count == 0 then
+            item_price = item_page.xpath('//span[@id="our_price_display"]').text.strip
             full_inf.push({
-                              Name: item_main_name  + ' - ' + item_weight[$i].text.strip,
-                              Price: item_price[$i].text.strip,
+                              Name: item_main_name,
+                              Price: item_price,
                               Image: item_image.to_s
-                          }) 
-              $i +=1
+                          })
+            else
+              while $i < item_weight.count  do
+                full_inf.push({
+                                  Name: item_main_name  + ' - ' + item_weight[$i].text.strip,
+                                  Price: item_price[$i].text.strip,
+                                  Image: item_image.to_s
+                              })
+                  $i +=1
+              end
           end
           full_inf.each do |el|
             CSV.open('data1.csv', 'a+') do |csv|
@@ -42,8 +51,8 @@ class Scratcher
           end
           puts el
           puts ' '
+        end
         index += 1
-      end
       end
   end
 
