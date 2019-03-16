@@ -23,15 +23,12 @@ class Scratcher
           item_price = item_page.xpath('//span[@class="price_comb"]')
           $i = 0
           full_inf = []
-
-
           while $i < item_weight.count  do
             full_inf.push({
                               Name: item_main_name  + ' - ' + item_weight[$i].text.strip,
                               Price: item_price[$i].text.strip,
                               Image: item_image.to_s
-                          })
-
+                          }) 
               $i +=1
           end
           full_inf.each do |el|
@@ -43,17 +40,8 @@ class Scratcher
               puts 'done'
             end
           end
-          #item_page.xpath('//span[@class="radio_label"]').each do |el|
-          #  item << item_main_name + ' ' + el.text.strip
-          #end
-          #puts item
-          #item_page.xpath('//span[@class="price_comb"]').each do |el|
-          #  puts el.text.strip
-          #end
-          #осталось просто достать остальные атрибуты, используй item_page для этого (как с картинкой)
           puts el
           puts ' '
-
         index += 1
       end
       end
